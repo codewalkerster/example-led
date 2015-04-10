@@ -19,10 +19,6 @@
 #include <wiringSerial.h>
 #include <lcd.h>
 
-void Java_com_hardkernel_wiringpi_MainActivity_pinMode(JNIEnv* env, jobject obj, jint pin, jint inout) {
-    pinMode(pin, inout ? OUTPUT : INPUT);
-}
-
 jint Java_com_hardkernel_wiringpi_MainActivity_analogRead(JNIEnv* env, jobject obj, jint port) {
     return analogRead(port);
 }
