@@ -80,8 +80,6 @@ public class MainActivity extends Activity {
             CheckBox cb = (CheckBox) findViewById(id);
             mLeds.add(cb);
         }
-
-        wiringPiSetupSys();
     }
 
     public void update() {
@@ -113,7 +111,10 @@ public class MainActivity extends Activity {
     protected void onResume() {
         // TODO Auto-generated method stub
         super.onResume();
-        exportGPIO();       
+
+        exportGPIO();
+
+        wiringPiSetupSys();
 
         mStop = false;
         handler.postDelayed(runnable, 100);
@@ -124,10 +125,10 @@ public class MainActivity extends Activity {
         // TODO Auto-generated method stub
         super.onPause();
         mStop = true;
-        unexportGPIO();        
         for (int i = 0; i < ledPorts.length; i++) {
             digitalWrite (ledPorts[i], 0);
         }
+        unexportGPIO();
     }
 
     boolean exportGPIO() {
@@ -140,10 +141,14 @@ public class MainActivity extends Activity {
                 os.writeBytes("chmod 666 /sys/class/gpio/gpio" + port + "/value\n");
             }
             os.flush();
+            Thread.sleep(1000);
         } catch (IOException e1) {
             // TODO Auto-generated catch block
             e1.printStackTrace();
             return false;
+        } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
 
         return true;
